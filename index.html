@@ -1,33 +1,87 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#ee6a32"><meta name="description" content="Find delicious recipes from around the world.">
-  <title>Savora — Recipe & Meal Finder</title><link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="orb orb-a"></div><div class="orb orb-b"></div>
-  <header>
-    <a class="brand" href="#"><b>S</b><span>Savora</span></a>
-    <nav><button class="nav active" data-view="discover">Discover</button><button class="nav" data-view="favorites">Favorites <i id="favCount">0</i></button></nav>
-  </header>
-  <main>
-    <section class="hero">
-      <small><span></span> YOUR NEXT FAVORITE MEAL</small>
-      <h1>What are we<br><em>cooking today?</em></h1>
-      <p>Explore delicious recipes from kitchens around the world. Search by dish, browse a cuisine, or simply get inspired.</p>
-      <form id="searchForm" class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg><input id="searchInput" type="search" placeholder="Search pasta, chicken, curry..." aria-label="Search recipes"><button>Find recipes →</button></form>
-      <div class="quick"><span>Try:</span><button data-search="Pasta">Pasta</button><button data-search="Chicken">Chicken</button><button data-search="Vegetarian">Vegetarian</button><button id="random">✦ Surprise me</button></div>
-    </section>
-    <section class="collection">
-      <div class="heading"><div><small id="kicker">EXPLORE THE COLLECTION</small><h2 id="title">Popular recipes</h2></div><select id="area" aria-label="Filter by cuisine"><option value="">All cuisines</option></select></div>
-      <div class="categories" id="categories"></div>
-      <div class="message hidden" id="message"></div><div class="grid" id="grid"></div>
-      <button class="more hidden" id="more">Show more recipes</button>
-    </section>
-  </main>
-  <footer><a class="brand" href="#"><b>S</b><span>Savora</span></a><p>Made for people who love good food.</p><p>Powered by <a href="https://www.themealdb.com" target="_blank" rel="noreferrer">TheMealDB</a></p></footer>
-  <dialog id="modal"><button class="close" id="close" aria-label="Close">×</button><div id="modalBody"></div></dialog>
-  <div class="toast" id="toast" role="status"></div><script src="script.js"></script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content="#ee6a32" />
+        <meta
+            name="description"
+            content="Find delicious recipes from around the world."
+        />
+        <title>Savora — Recipe & Meal Finder</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="orb orb-a"></div>
+        <div class="orb orb-b"></div>
+        <header>
+            <a class="brand" href="#"><b>S</b><span>Savora</span></a>
+            <nav>
+                <button class="nav active" data-view="discover">Discover</button
+                ><button class="nav" data-view="favorites">
+                    Favorites <i id="favCount">0</i>
+                </button>
+            </nav>
+        </header>
+        <main>
+            <section class="hero">
+                <small><span></span> YOUR NEXT FAVORITE MEAL</small>
+                <h1>What are we<br /><em>cooking today?</em></h1>
+                <p>
+                    Explore delicious recipes from kitchens around the world.
+                    Search by dish, browse a cuisine, or simply get inspired.
+                </p>
+                <form id="searchForm" class="search">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <path d="m16 16 5 5"></path></svg><input
+                        id="searchInput"
+                        type="search"
+                        placeholder="Search pasta, chicken, curry..."
+                        aria-label="Search recipes"
+                    /><button>Find recipes →</button>
+                </form>
+                <div class="quick">
+                    <span>Try:</span><button data-search="Pasta">Pasta</button
+                    ><button data-search="Chicken">Chicken</button
+                    ><button data-search="Vegetarian">Vegetarian</button
+                    ><button id="random">✦ Surprise me</button>
+                </div>
+            </section>
+            <section class="collection">
+                <div class="heading">
+                    <div>
+                        <small id="kicker">EXPLORE THE COLLECTION</small>
+                        <h2 id="title">Popular recipes</h2>
+                    </div>
+                    <select id="area" aria-label="Filter by cuisine">
+                        <option value="">All cuisines</option>
+                    </select>
+                </div>
+                <div class="categories" id="categories"></div>
+                <div class="message hidden" id="message"></div>
+                <div class="grid" id="grid"></div>
+                <button class="more hidden" id="more">Show more recipes</button>
+            </section>
+        </main>
+        <footer>
+            <a class="brand" href="#"><b>S</b><span>Savora</span></a>
+            <p>Made for people who love good food.</p>
+            <p>
+                Powered by
+                <a
+                    href="https://www.themealdb.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    >TheMealDB</a
+                >
+            </p>
+        </footer>
+        <dialog id="modal">
+            <button class="close" id="close" aria-label="Close">×</button>
+            <div id="modalBody"></div>
+        </dialog>
+        <div class="toast" id="toast" role="status"></div>
+        <script src="script.js"></script>
+    </body>
 </html>
