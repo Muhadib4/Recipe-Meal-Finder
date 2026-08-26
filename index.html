@@ -1,45 +1,314 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f26f38"><meta name="description" content="Discover beautiful recipes and build your personal cookbook with Savora.">
-  <title>Savora — Find something delicious</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://www.themealdb.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="enhancements.css">
-</head>
-<body>
-  <div class="noise" aria-hidden="true"></div><div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
-  <header class="site-header" id="siteHeader"><div class="header-inner">
-    <a class="brand" href="#top" aria-label="Savora home"><span class="brand-mark"><span>S</span></span><span class="brand-name">Savora</span></a>
-    <nav class="main-nav" aria-label="Main navigation"><button class="nav-link active" data-view="discover">Discover</button><button class="nav-link" data-view="favorites">My cookbook <span class="count" id="favoriteCount">0</span></button></nav>
-    <div class="header-actions"><label class="language-picker" title="Language"><span>🌐</span><select id="languageSelect" aria-label="Choose language"><option value="en">EN</option><option value="id">ID</option><option value="es">ES</option><option value="fr">FR</option></select></label><button class="icon-button" id="searchShortcut" aria-label="Focus search" title="Search (Ctrl + K)"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg></button><button class="icon-button" id="themeToggle" aria-label="Toggle dark mode"><svg class="sun-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path></svg><svg class="moon-icon" viewBox="0 0 24 24"><path d="M20.5 14.4A8.5 8.5 0 0 1 9.6 3.5 8.5 8.5 0 1 0 20.5 14.4Z"></path></svg></button></div>
-  </div></header>
-  <main id="top">
-    <section class="hero" id="discoverView">
-      <div class="hero-copy">
-        <div class="eyebrow reveal"><span class="eyebrow-dot"></span> Recipes worth remembering</div>
-        <h1 class="reveal delay-1">Find your next<br><em>favorite meal.</em></h1>
-        <p class="hero-description reveal delay-2">From quick comfort food to dishes from across the world—discover exactly what you feel like cooking.</p>
-        <form class="search-bar reveal delay-3" id="searchForm" role="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg><input id="searchInput" type="search" placeholder="Search any dish..." autocomplete="off" aria-label="Search recipes"><kbd>Ctrl K</kbd><button type="submit">Explore <span>→</span></button></form>
-        <div class="hero-actions reveal delay-4"><div class="popular-searches"><span>Popular</span><button data-search="Pasta">Pasta</button><button data-search="Chicken">Chicken</button><button data-search="Curry">Curry</button></div><button class="surprise-button" id="randomButton"><span>✦</span> Surprise me</button></div>
-        <div class="trust-row reveal delay-4"><div><strong>300+</strong><span>Curated recipes</span></div><i></i><div><strong>25+</strong><span>World cuisines</span></div><i></i><div><strong>Free</strong><span>No sign-up needed</span></div></div>
-      </div>
-      <div class="hero-visual reveal delay-2" aria-label="Featured dishes">
-        <div class="visual-blob"></div><div class="hero-card main-dish" id="heroMainCard"><div class="hero-image skeleton-bg" id="heroMainImage"></div><div class="hero-card-info"><span>Today’s inspiration</span><strong id="heroMainTitle">Finding something delicious…</strong></div></div>
-        <div class="mini-card mini-card-one" id="heroMiniOne"><div class="mini-image skeleton-bg"></div><span>Fresh ideas</span></div><div class="mini-card mini-card-two" id="heroMiniTwo"><div class="mini-image skeleton-bg"></div><span>Global flavors</span></div>
-        <div class="floating-badge"><span>♥</span><div><strong>Save it</strong><small>Build your cookbook</small></div></div><div class="spark spark-one">✦</div><div class="spark spark-two">✦</div>
-      </div>
-    </section>
-    <section class="category-section reveal-section" aria-labelledby="categoryTitle"><div class="section-intro"><div><span class="section-label">Explore by taste</span><h2 id="categoryTitle">What are you craving?</h2></div><p>Pick a category and find a meal that matches your mood.</p></div><div class="category-grid" id="categoryGrid"></div></section>
-    <section class="region-section reveal-section" aria-labelledby="regionTitle"><div class="section-intro"><div><span class="section-label" id="regionLabel">Around the world</span><h2 id="regionTitle">Choose your food destination</h2></div><p id="regionDescription">From Indonesian comfort food to European classics—travel through flavor.</p></div><div class="region-grid" id="regionGrid"></div></section>
-    <section class="recipes-section reveal-section" id="recipesSection" aria-live="polite">
-      <div class="recipe-toolbar"><div><span class="section-label" id="sectionLabel">Handpicked for you</span><h2 id="sectionTitle">Recipes to try today</h2><p id="resultCount">Loading the collection…</p></div><div class="toolbar-actions"><label class="select-wrap"><span class="sr-only">Cuisine</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 0 1 0 18m0-18a15 15 0 0 0 0 18"></path></svg><select id="areaFilter"><option value="">All cuisines</option></select></label><button class="view-toggle active" id="gridView" aria-label="Grid view"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg></button><button class="view-toggle" id="listView" aria-label="List view"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13"></path><circle cx="3.5" cy="6" r=".5"></circle><circle cx="3.5" cy="12" r=".5"></circle><circle cx="3.5" cy="18" r=".5"></circle></svg></button></div></div>
-      <div class="active-filter hidden" id="activeFilter"><span id="activeFilterText"></span><button id="clearFilter" aria-label="Clear filter">×</button></div><div class="status-card hidden" id="statusCard"></div><div class="recipe-grid" id="recipeGrid"></div><button class="load-more hidden" id="loadMore"><span>Load more recipes</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></svg></button>
-    </section>
-    <section class="cta-section reveal-section"><div class="cta-shape shape-one"></div><div class="cta-shape shape-two"></div><span class="cta-icon">✦</span><span class="section-label">Can't decide?</span><h2>Let chance choose<br><em>your next meal.</em></h2><p>One click. One random recipe. A whole new favorite.</p><button id="randomCta">Surprise me <span>→</span></button></section>
-  </main>
-  <footer><div class="footer-top"><a class="brand" href="#top"><span class="brand-mark"><span>S</span></span><span class="brand-name">Savora</span></a><p>Good food starts with a little inspiration.</p><a href="#top" class="back-top">Back to top ↑</a></div><div class="footer-bottom"><span>© 2026 Savora. Crafted by Muhadiib.</span><span>Recipe data by <a href="https://www.themealdb.com" target="_blank" rel="noreferrer">TheMealDB</a></span></div></footer>
-  <dialog class="recipe-modal" id="recipeModal"><button class="modal-close" id="modalClose" aria-label="Close recipe">×</button><div id="modalContent"></div></dialog>
-  <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastIcon">✓</span><span id="toastText"></span></div><script src="data.js"></script><script src="script.js"></script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content="#f26f38" />
+        <meta
+            name="description"
+            content="Discover beautiful recipes and build your personal cookbook with Savora."
+        />
+        <title>Savora — Find something delicious</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://www.themealdb.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="enhancements.css" />
+    </head>
+    <body>
+        <div class="noise" aria-hidden="true"></div>
+        <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+        <header class="site-header" id="siteHeader">
+            <div class="header-inner">
+                <a class="brand" href="#top" aria-label="Savora home"
+                    ><span class="brand-mark"><span>S</span></span
+                    ><span class="brand-name">Savora</span></a
+                >
+                <nav class="main-nav" aria-label="Main navigation">
+                    <button class="nav-link active" data-view="discover">
+                        Discover</button
+                    ><button class="nav-link" data-view="favorites">
+                        My cookbook
+                        <span class="count" id="favoriteCount">0</span>
+                    </button>
+                </nav>
+                <div class="header-actions">
+                    <label class="language-picker" title="Language"
+                        ><span>🌐</span
+                        ><select
+                            id="languageSelect"
+                            aria-label="Choose language"
+                        >
+                            <option value="en">EN</option>
+                            <option value="id">ID</option>
+                            <option value="es">ES</option>
+                            <option value="fr">FR</option>
+                        </select></label
+                    ><button
+                        class="icon-button"
+                        id="searchShortcut"
+                        aria-label="Focus search"
+                        title="Search (Ctrl + K)"
+                    >
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="m16 16 5 5"></path>
+                        </svg></button
+                    ><button
+                        class="icon-button"
+                        id="themeToggle"
+                        aria-label="Toggle dark mode"
+                    >
+                        <svg class="sun-icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <path
+                                d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"
+                            ></path></svg><svg class="moon-icon" viewBox="0 0 24 24">
+                            <path
+                                d="M20.5 14.4A8.5 8.5 0 0 1 9.6 3.5 8.5 8.5 0 1 0 20.5 14.4Z"
+                            ></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <main id="top">
+            <section class="hero" id="discoverView">
+                <div class="hero-copy">
+                    <div class="eyebrow reveal">
+                        <span class="eyebrow-dot"></span> Recipes worth
+                        remembering
+                    </div>
+                    <h1 class="reveal delay-1">
+                        Find your next<br /><em>favorite meal.</em>
+                    </h1>
+                    <p class="hero-description reveal delay-2">
+                        From quick comfort food to dishes from across the
+                        world—discover exactly what you feel like cooking.
+                    </p>
+                    <form
+                        class="search-bar reveal delay-3"
+                        id="searchForm"
+                        role="search"
+                    >
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="m16 16 5 5"></path></svg><input
+                            id="searchInput"
+                            type="search"
+                            placeholder="Search any dish..."
+                            autocomplete="off"
+                            aria-label="Search recipes"
+                        /><kbd>Ctrl K</kbd
+                        ><button type="submit">Explore <span>→</span></button>
+                    </form>
+                    <div class="hero-actions reveal delay-4">
+                        <div class="popular-searches">
+                            <span>Popular</span
+                            ><button data-search="Pasta">Pasta</button
+                            ><button data-search="Chicken">Chicken</button
+                            ><button data-search="Curry">Curry</button>
+                        </div>
+                        <button class="surprise-button" id="randomButton">
+                            <span>✦</span> Surprise me
+                        </button>
+                    </div>
+                    <div class="trust-row reveal delay-4">
+                        <div>
+                            <strong>300+</strong><span>Curated recipes</span>
+                        </div>
+                        <i></i>
+                        <div>
+                            <strong>25+</strong><span>World cuisines</span>
+                        </div>
+                        <i></i>
+                        <div>
+                            <strong>Free</strong><span>No sign-up needed</span>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="hero-visual reveal delay-2"
+                    aria-label="Featured dishes"
+                >
+                    <div class="visual-blob"></div>
+                    <div class="hero-card main-dish" id="heroMainCard">
+                        <div
+                            class="hero-image skeleton-bg"
+                            id="heroMainImage"
+                        ></div>
+                        <div class="hero-card-info">
+                            <span>Today’s inspiration</span
+                            ><strong id="heroMainTitle"
+                                >Finding something delicious…</strong
+                            >
+                        </div>
+                    </div>
+                    <div class="mini-card mini-card-one" id="heroMiniOne">
+                        <div class="mini-image skeleton-bg"></div>
+                        <span>Fresh ideas</span>
+                    </div>
+                    <div class="mini-card mini-card-two" id="heroMiniTwo">
+                        <div class="mini-image skeleton-bg"></div>
+                        <span>Global flavors</span>
+                    </div>
+                    <div class="floating-badge">
+                        <span>♥</span>
+                        <div>
+                            <strong>Save it</strong
+                            ><small>Build your cookbook</small>
+                        </div>
+                    </div>
+                    <div class="spark spark-one">✦</div>
+                    <div class="spark spark-two">✦</div>
+                </div>
+            </section>
+            <section
+                class="category-section reveal-section"
+                aria-labelledby="categoryTitle"
+            >
+                <div class="section-intro">
+                    <div>
+                        <span class="section-label">Explore by taste</span>
+                        <h2 id="categoryTitle">What are you craving?</h2>
+                    </div>
+                    <p>
+                        Pick a category and find a meal that matches your mood.
+                    </p>
+                </div>
+                <div class="category-grid" id="categoryGrid"></div>
+            </section>
+            <section
+                class="region-section reveal-section"
+                aria-labelledby="regionTitle"
+            >
+                <div class="section-intro">
+                    <div>
+                        <span class="section-label" id="regionLabel"
+                            >Around the world</span
+                        >
+                        <h2 id="regionTitle">Choose your food destination</h2>
+                    </div>
+                    <p id="regionDescription">
+                        From Indonesian comfort food to European classics—travel
+                        through flavor.
+                    </p>
+                </div>
+                <div class="region-grid" id="regionGrid"></div>
+            </section>
+            <section
+                class="recipes-section reveal-section"
+                id="recipesSection"
+                aria-live="polite"
+            >
+                <div class="recipe-toolbar">
+                    <div>
+                        <span class="section-label" id="sectionLabel"
+                            >Handpicked for you</span
+                        >
+                        <h2 id="sectionTitle">Recipes to try today</h2>
+                        <p id="resultCount">Loading the collection…</p>
+                    </div>
+                    <div class="toolbar-actions">
+                        <label class="select-wrap"
+                            ><span class="sr-only">Cuisine</span
+                            ><svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path
+                                    d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 0 1 0 18m0-18a15 15 0 0 0 0 18"
+                                ></path></svg><select id="areaFilter">
+                                <option value="">All cuisines</option>
+                            </select></label
+                        ><button
+                            class="view-toggle active"
+                            id="gridView"
+                            aria-label="Grid view"
+                        >
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                            </svg></button
+                        ><button
+                            class="view-toggle"
+                            id="listView"
+                            aria-label="List view"
+                        >
+                            <svg viewBox="0 0 24 24">
+                                <path d="M8 6h13M8 12h13M8 18h13"></path>
+                                <circle cx="3.5" cy="6" r=".5"></circle>
+                                <circle cx="3.5" cy="12" r=".5"></circle>
+                                <circle cx="3.5" cy="18" r=".5"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="active-filter hidden" id="activeFilter">
+                    <span id="activeFilterText"></span
+                    ><button id="clearFilter" aria-label="Clear filter">
+                        ×
+                    </button>
+                </div>
+                <div class="status-card hidden" id="statusCard"></div>
+                <div class="recipe-grid" id="recipeGrid"></div>
+                <button class="load-more hidden" id="loadMore">
+                    <span>Load more recipes</span
+                    ><svg viewBox="0 0 24 24">
+                        <path d="m6 9 6 6 6-6"></path>
+                    </svg>
+                </button>
+            </section>
+            <section class="cta-section reveal-section">
+                <div class="cta-shape shape-one"></div>
+                <div class="cta-shape shape-two"></div>
+                <span class="cta-icon">✦</span
+                ><span class="section-label">Can't decide?</span>
+                <h2>Let chance choose<br /><em>your next meal.</em></h2>
+                <p>One click. One random recipe. A whole new favorite.</p>
+                <button id="randomCta">Surprise me <span>→</span></button>
+            </section>
+        </main>
+        <footer>
+            <div class="footer-top">
+                <a class="brand" href="#top"
+                    ><span class="brand-mark"><span>S</span></span
+                    ><span class="brand-name">Savora</span></a
+                >
+                <p>Good food starts with a little inspiration.</p>
+                <a href="#top" class="back-top">Back to top ↑</a>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Savora. Crafted by Muhadiib.</span
+                ><span
+                    >Recipe data by
+                    <a
+                        href="https://www.themealdb.com"
+                        target="_blank"
+                        rel="noreferrer"
+                        >TheMealDB</a
+                    ></span
+                >
+            </div>
+        </footer>
+        <dialog class="recipe-modal" id="recipeModal">
+            <button
+                class="modal-close"
+                id="modalClose"
+                aria-label="Close recipe"
+            >
+                ×
+            </button>
+            <div id="modalContent"></div>
+        </dialog>
+        <div class="toast" id="toast" role="status" aria-live="polite">
+            <span id="toastIcon">✓</span><span id="toastText"></span>
+        </div>
+        <script src="data.js"></script>
+        <script src="script.js"></script>
+    </body>
 </html>

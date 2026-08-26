@@ -1,3 +1,137 @@
-.header-actions{align-items:center}.language-picker{height:42px;padding:0 9px;display:flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:12px}.language-picker select{width:38px;padding:0;border:0;outline:0;background:transparent;color:var(--ink);font-size:11px;font-weight:800;cursor:pointer}.language-picker option{background:var(--surface);color:var(--ink)}
-.region-section{padding:100px 0;border-top:1px solid var(--line)}.region-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.region-card{position:relative;min-height:210px;padding:25px;overflow:hidden;border:1px solid var(--line);border-radius:26px;background:var(--surface);cursor:pointer;text-align:left;transition:.35s}.region-card:before{content:'';position:absolute;width:180px;height:180px;right:-75px;top:-80px;border-radius:50%;background:var(--region-color);opacity:.16;transition:.4s}.region-card:hover,.region-card.active{transform:translateY(-7px);box-shadow:var(--shadow)}.region-card:hover:before,.region-card.active:before{transform:scale(1.35);opacity:.25}.region-flag{display:block;margin-bottom:35px;font-size:37px;filter:drop-shadow(0 7px 10px rgba(0,0,0,.12));transition:.3s}.region-card:hover .region-flag{transform:translateY(-3px) rotate(-4deg)}.region-card strong{display:block;font:800 18px Manrope,sans-serif}.region-card small{display:block;max-width:220px;margin-top:7px;color:var(--muted);font-size:11px;line-height:1.55}.region-arrow{position:absolute;right:20px;bottom:20px;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--surface-2);font-size:15px;transition:.3s}.region-card:hover .region-arrow,.region-card.active .region-arrow{background:var(--ink);color:var(--bg);transform:rotate(-35deg)}
-@media(max-width:1050px){.region-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:580px){.language-picker{padding:0 7px}.language-picker>span{display:none}.region-grid{grid-template-columns:1fr}.region-card{min-height:175px}.region-flag{margin-bottom:25px}}
+.header-actions {
+    align-items: center;
+}
+.language-picker {
+    height: 42px;
+    padding: 0 9px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    font-size: 12px;
+}
+.language-picker select {
+    width: 38px;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+.language-picker option {
+    background: var(--surface);
+    color: var(--ink);
+}
+.region-section {
+    padding: 100px 0;
+    border-top: 1px solid var(--line);
+}
+.region-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+.region-card {
+    position: relative;
+    min-height: 210px;
+    padding: 25px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 26px;
+    background: var(--surface);
+    cursor: pointer;
+    text-align: left;
+    transition: 0.35s;
+}
+.region-card:before {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    right: -75px;
+    top: -80px;
+    border-radius: 50%;
+    background: var(--region-color);
+    opacity: 0.16;
+    transition: 0.4s;
+}
+.region-card:hover,
+.region-card.active {
+    transform: translateY(-7px);
+    box-shadow: var(--shadow);
+}
+.region-card:hover:before,
+.region-card.active:before {
+    transform: scale(1.35);
+    opacity: 0.25;
+}
+.region-flag {
+    display: block;
+    margin-bottom: 35px;
+    font-size: 37px;
+    filter: drop-shadow(0 7px 10px rgba(0, 0, 0, 0.12));
+    transition: 0.3s;
+}
+.region-card:hover .region-flag {
+    transform: translateY(-3px) rotate(-4deg);
+}
+.region-card strong {
+    display: block;
+    font:
+        800 18px Manrope,
+        sans-serif;
+}
+.region-card small {
+    display: block;
+    max-width: 220px;
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.55;
+}
+.region-arrow {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    font-size: 15px;
+    transition: 0.3s;
+}
+.region-card:hover .region-arrow,
+.region-card.active .region-arrow {
+    background: var(--ink);
+    color: var(--bg);
+    transform: rotate(-35deg);
+}
+@media (max-width: 1050px) {
+    .region-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 580px) {
+    .language-picker {
+        padding: 0 7px;
+    }
+    .language-picker > span {
+        display: none;
+    }
+    .region-grid {
+        grid-template-columns: 1fr;
+    }
+    .region-card {
+        min-height: 175px;
+    }
+    .region-flag {
+        margin-bottom: 25px;
+    }
+}
