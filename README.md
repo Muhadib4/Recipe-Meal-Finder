@@ -1,6 +1,6 @@
 # Savora — Recipe & Meal Finder
 
-A responsive recipe discovery website built with HTML, CSS, and JavaScript. Recipe data comes from the free [TheMealDB API](https://www.themealdb.com/api.php).
+An editorial-style recipe discovery experience built with HTML, CSS, and JavaScript. Savora combines a premium responsive interface with live recipe data from the free [TheMealDB API](https://www.themealdb.com/api.php).
 
 ## Features
 
@@ -9,7 +9,11 @@ A responsive recipe discovery website built with HTML, CSS, and JavaScript. Reci
 - Complete ingredients and cooking instructions
 - Random recipe inspiration
 - Favorites saved in browser local storage
-- Responsive design, loading states, and error handling
+- Grid and list browsing modes
+- Light and dark themes with saved preference
+- Shareable recipes and cooking video links
+- Keyboard shortcut (`Ctrl/Cmd + K`) for search
+- Responsive editorial layout, scroll animations, loading states, and error handling
 
 ## Run locally
 
