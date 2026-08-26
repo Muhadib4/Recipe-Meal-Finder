@@ -13,14 +13,18 @@ const safeJSON = (key, fallback) => {
 const state = {
   meals: [],
   favorites: safeJSON('savora-favorites', []),
-  shown: 8,
+  shown: 12,
   view: 'discover',
   layout: localStorage.getItem('savora-layout') || 'grid',
+  sort: 'default',
   category: '',
   area: '',
+  ingredient: '',
   region: '',
   search: '',
   heroMeals: [],
+  allMealsCache: [],
+  recent: safeJSON('savora-recent', []),
   language: localStorage.getItem('savora-language') || 'en'
 };
 
@@ -32,6 +36,13 @@ const elements = {
   regionGrid: $('#regionGrid'),
   languageSelect: $('#languageSelect'),
   areaFilter: $('#areaFilter'),
+  ingredientFilter: $('#ingredientFilter'),
+  sortFilter: $('#sortFilter'),
+  quickGrid: $('#quickGrid'),
+  recentSection: $('#recentSection'),
+  recentGrid: $('#recentGrid'),
+  searchSuggestions: $('#searchSuggestions'),
+  scrollProgress: $('#scrollProgress'),
   recipeGrid: $('#recipeGrid'),
   status: $('#statusCard'),
   loadMore: $('#loadMore'),
@@ -62,6 +73,15 @@ const categoryMeta = {
     Breakfast: ["🍳", "Start the day"],
     Goat: ["🍲", "Deep flavors"],
 };
+
+const quickJourneys = [
+    { icon: "🍲", title: "comfort", desc: "comfortDesc", type: "c", value: "Beef", color: "#e47745" },
+    { icon: "🌿", title: "fresh", desc: "freshDesc", type: "c", value: "Vegetarian", color: "#4b9a69" },
+    { icon: "🍰", title: "sweet", desc: "sweetDesc", type: "c", value: "Dessert", color: "#d7698f" },
+    { icon: "🍳", title: "breakfastPick", desc: "breakfastPickDesc", type: "c", value: "Breakfast", color: "#e7a23b" },
+    { icon: "🦐", title: "ocean", desc: "oceanDesc", type: "c", value: "Seafood", color: "#4788bb" },
+    { icon: "🇮🇩", title: "indonesiaPick", desc: "indonesiaPickDesc", type: "r", value: "indonesia", color: "#e94b45" },
+];
 
 const { localMeals, regions, translations } = window.SAVORA_DATA;
 const t = (key) =>
@@ -146,6 +166,31 @@ function renderRegions() {
         .join("");
 }
 
+function renderQuickJourneys() {
+    elements.quickGrid.innerHTML = quickJourneys.map(item => `
+        <button class="quick-card" data-quick-type="${item.type}" data-quick-value="${item.value}" style="--quick:${item.color}">
+            <span class="quick-icon">${item.icon}</span>
+            <strong>${escapeHTML(t(item.title))}</strong>
+            <small>${escapeHTML(t(item.desc))}</small>
+            <span class="region-arrow">→</span>
+        </button>`).join("");
+}
+
+function renderRecent() {
+    elements.recentSection.classList.toggle("hidden", !state.recent.length);
+    elements.recentGrid.innerHTML = state.recent.slice(0, 5).map(meal => `
+        <button class="recent-card" data-recent-id="${escapeHTML(meal.idMeal)}">
+            <img src="${escapeHTML(meal.strMealThumb)}" alt="" loading="lazy">
+            <span><strong>${escapeHTML(meal.strMeal)}</strong><small>${escapeHTML(meal.strArea || t("inspiration"))}</small></span>
+        </button>`).join("");
+}
+
+function rememberMeal(meal) {
+    state.recent = [meal, ...state.recent.filter(item => item.idMeal !== meal.idMeal)].slice(0, 8);
+    localStorage.setItem("savora-recent", JSON.stringify(state.recent));
+    renderRecent();
+}
+
 function applyLanguage() {
   document.documentElement.lang = state.language;
   elements.languageSelect.value = state.language;
@@ -165,12 +210,19 @@ function applyLanguage() {
   $('.category-section .section-intro>p').textContent = t('cravingDesc');
   $('#regionLabel').textContent = t('around'); $('#regionTitle').textContent = t('regionTitle'); $('#regionDescription').textContent = t('regionDesc');
   elements.areaFilter.options[0].textContent = t('allCuisines');
+  elements.ingredientFilter.options[0].textContent = t('allIngredients');
+  elements.sortFilter.options[0].textContent = t('sortDefault');
+  elements.sortFilter.options[1].textContent = t('sortAZ');
+  elements.sortFilter.options[2].textContent = t('sortZA');
+  $('#quickLabel').textContent = t('quickLabel'); $('#quickTitle').textContent = t('quickTitle'); $('#quickDescription').textContent = t('quickDesc');
+  $('#recentLabel').textContent = t('recentLabel'); $('#recentTitle').textContent = t('recentTitle'); $('#recentDescription').textContent = t('recentDesc');
   $('#loadMore span').textContent = t('loadMore');
   $('.cta-section>.section-label').textContent = t('cantDecide');
   $('.cta-section h2').innerHTML = t('chance'); $('.cta-section p').textContent = t('chanceDesc');
   $('#randomCta').innerHTML = `${t('surprise')} <span>→</span>`;
   $('.footer-top p').textContent = t('footer'); $('.back-top').textContent = t('back');
   renderRegions();
+  renderQuickJourneys(); renderRecent();
   $$('.category-card').forEach(button => {
     $('strong', button).textContent = localCategory(button.dataset.category);
     $('small', button).textContent = t('inspiration');
@@ -179,6 +231,7 @@ function applyLanguage() {
   else if (state.region) { elements.sectionLabel.textContent = t('around'); elements.sectionTitle.textContent = t(state.region); updateActiveFilter(`${t('around')}: ${t(state.region)}`); }
   else if (state.category) { elements.sectionLabel.textContent = t('taste'); elements.sectionTitle.textContent = localCategory(state.category); updateActiveFilter(`${t('category')}: ${localCategory(state.category)}`); }
   else if (state.area) { elements.sectionLabel.textContent = t('around'); updateActiveFilter(`${t('cuisine')}: ${state.area}`); }
+  else if (state.ingredient) { elements.sectionLabel.textContent = t('ingredients'); elements.sectionTitle.textContent = state.ingredient; updateActiveFilter(`${t('ingredients')}: ${state.ingredient}`); }
   else if (state.search) { elements.sectionLabel.textContent = t('explore'); updateActiveFilter(`${t('explore')}: ${state.search}`); }
   else { elements.sectionLabel.textContent = t('handpicked'); elements.sectionTitle.textContent = t('today'); updateActiveFilter(); }
   renderMeals();
@@ -204,7 +257,7 @@ function showToast(text, icon = "✓") {
 function showSkeletons() {
   elements.status.classList.add('hidden');
   elements.loadMore.classList.add('hidden');
-  elements.recipeGrid.innerHTML = Array.from({ length: 8 }, () => `
+  elements.recipeGrid.innerHTML = Array.from({ length: 12 }, () => `
     <article class="recipe-card skeleton-card" aria-hidden="true">
       <div class="card-image"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div>
     </article>`,
@@ -243,7 +296,10 @@ function mealCard(meal, index) {
 }
 
 function currentSource() {
-  return state.view === 'favorites' ? state.favorites : state.meals;
+  const source = state.view === 'favorites' ? state.favorites : state.meals;
+  if (state.sort === 'az') return [...source].sort((a, b) => a.strMeal.localeCompare(b.strMeal));
+  if (state.sort === 'za') return [...source].sort((a, b) => b.strMeal.localeCompare(a.strMeal));
+  return source;
 }
 
 function renderMeals() {
@@ -304,13 +360,14 @@ function setHeroMeals(meals) {
 }
 
 async function loadFeatured({ scroll = false } = {}) {
-  state.view = 'discover'; state.category = ''; state.area = ''; state.region = ''; state.search = ''; state.shown = 8;
-  elements.areaFilter.value = '';
+  state.view = 'discover'; state.category = ''; state.area = ''; state.ingredient = ''; state.region = ''; state.search = ''; state.shown = 12;
+  elements.areaFilter.value = ''; elements.ingredientFilter.value = '';
   updateNavigation(); updateActiveFilter(); updateCategorySelection(); updateRegionSelection(); showSkeletons();
   elements.sectionLabel.textContent = t('handpicked'); elements.sectionTitle.textContent = t('today');
   try {
-    const batches = await Promise.all(['chicken', 'pasta', 'salmon', 'curry'].map(term => api(`search.php?s=${term}`)));
+    const batches = await Promise.all(['Chicken', 'Seafood', 'Dessert', 'Vegetarian', 'Beef', 'Pasta'].map(category => api(`filter.php?c=${category}`)));
     const unique = new Map();
+    localMeals.forEach(meal => unique.set(meal.idMeal, meal));
     batches.flatMap(batch => batch.meals || []).forEach(meal => unique.set(meal.idMeal, meal));
     state.meals = [...unique.values()];
     setHeroMeals(state.meals);
@@ -324,14 +381,16 @@ async function loadFeatured({ scroll = false } = {}) {
 async function searchMeals(term) {
   term = term.trim();
   if (!term) return loadFeatured({ scroll: true });
-  state.view = 'discover'; state.category = ''; state.area = ''; state.region = ''; state.search = term; state.shown = 8;
-  elements.areaFilter.value = '';
+  state.view = 'discover'; state.category = ''; state.area = ''; state.ingredient = ''; state.region = ''; state.search = term; state.shown = 12;
+  elements.areaFilter.value = ''; elements.ingredientFilter.value = ''; hideSuggestions();
   updateNavigation(); updateCategorySelection(); updateRegionSelection(); updateActiveFilter(`${t('explore')}: ${term}`); showSkeletons();
   elements.sectionLabel.textContent = t('explore'); elements.sectionTitle.textContent = `“${term}”`;
   try {
     const data = await api(`search.php?s=${encodeURIComponent(term)}`);
-    const localMatches = localMeals.filter(meal => `${meal.strMeal} ${meal.strCategory} ${meal.strArea}`.toLowerCase().includes(term.toLowerCase()));
-    state.meals = [...localMatches, ...(data.meals || [])];
+    const matchesTerm = meal => `${meal.strMeal} ${meal.strCategory || ''} ${meal.strArea || ''}`.toLowerCase().includes(term.toLowerCase());
+    const unique = new Map();
+    [...localMeals.filter(matchesTerm), ...state.allMealsCache.filter(matchesTerm), ...(data.meals || [])].forEach(meal => unique.set(meal.idMeal, meal));
+    state.meals = [...unique.values()];
     renderMeals(); scrollToRecipes();
   } catch {
     showStatus('!', 'Search is unavailable', 'Please wait a moment and try again.');
@@ -339,11 +398,13 @@ async function searchMeals(term) {
 }
 
 async function filterMeals(type, value) {
-  state.view = 'discover'; state.shown = 8; state.search = ''; state.region = '';
-  if (type === 'c') { state.category = value; state.area = ''; elements.areaFilter.value = ''; }
-  else { state.area = value; state.category = ''; }
-  updateNavigation(); updateCategorySelection(); updateRegionSelection(); updateActiveFilter(`${type === 'c' ? t('category') : t('cuisine')}: ${value}`); showSkeletons();
-  elements.sectionLabel.textContent = type === 'c' ? 'Explore by taste' : 'Explore the world';
+  state.view = 'discover'; state.shown = 12; state.search = ''; state.region = '';
+  if (type === 'c') { state.category = value; state.area = ''; state.ingredient = ''; elements.areaFilter.value = ''; elements.ingredientFilter.value = ''; }
+  else if (type === 'a') { state.area = value; state.category = ''; state.ingredient = ''; elements.ingredientFilter.value = ''; }
+  else { state.area = ''; state.category = ''; state.ingredient = value; elements.areaFilter.value = ''; }
+  const label = type === 'c' ? t('category') : type === 'a' ? t('cuisine') : t('ingredients');
+  updateNavigation(); updateCategorySelection(); updateRegionSelection(); updateActiveFilter(`${label}: ${value}`); showSkeletons();
+  elements.sectionLabel.textContent = type === 'c' ? t('taste') : type === 'a' ? t('around') : t('ingredients');
   elements.sectionTitle.textContent = type === 'c' ? localCategory(value) : value;
   try {
     const data = await api(`filter.php?${type}=${encodeURIComponent(value)}`);
@@ -356,13 +417,15 @@ async function filterMeals(type, value) {
 
 async function loadFilters() {
   try {
-    const [categoryData, areaData] = await Promise.all([api('list.php?c=list'), api('list.php?a=list')]);
+    const [categoryData, areaData, ingredientData] = await Promise.all([api('list.php?c=list'), api('list.php?a=list'), api('list.php?i=list')]);
     const categories = (categoryData.meals || []).filter(item => item.strCategory !== 'Miscellaneous').slice(0, 12);
     elements.categoryGrid.innerHTML = categories.map(item => {
       const [icon, subtitle] = categoryMeta[item.strCategory] || ['🍽️', 'Discover recipes'];
       return `<button class="category-card" data-category="${escapeHTML(item.strCategory)}"><span class="category-icon">${icon}</span><strong>${escapeHTML(localCategory(item.strCategory))}</strong><small>${escapeHTML(state.language === 'en' ? subtitle : t('inspiration'))}</small></button>`;
     }).join('');
     elements.areaFilter.innerHTML += (areaData.meals || []).map(item => `<option value="${escapeHTML(item.strArea)}">${escapeHTML(item.strArea)}</option>`).join('');
+    const ingredients = (ingredientData.meals || []).map(item => item.strIngredient).filter(Boolean).sort((a, b) => a.localeCompare(b));
+    elements.ingredientFilter.innerHTML = `<option value="">${escapeHTML(t('allIngredients'))}</option>` + ingredients.map(name => `<option value="${escapeHTML(name)}">${escapeHTML(name)}</option>`).join('');
   } catch {
     elements.categoryGrid.innerHTML = '<div class="status-card"><strong>Categories unavailable</strong><span>You can still search for any meal above.</span></div>';
   }
@@ -389,10 +452,15 @@ function updateRegionSelection() {
 async function loadRegion(regionId) {
   const region = regions.find(item => item.id === regionId);
   if (!region) return;
-  state.view = 'discover'; state.category = ''; state.area = ''; state.search = ''; state.region = regionId; state.shown = 8;
-  elements.areaFilter.value = '';
+  state.view = 'discover'; state.category = ''; state.area = ''; state.ingredient = ''; state.search = ''; state.region = regionId; state.shown = 12;
+  elements.areaFilter.value = ''; elements.ingredientFilter.value = '';
   updateNavigation(); updateCategorySelection(); updateRegionSelection(); updateActiveFilter(`${t('around')}: ${t(regionId)}`); showSkeletons();
   elements.sectionLabel.textContent = t('around'); elements.sectionTitle.textContent = t(regionId);
+
+    if (regionId === "world") {
+        await loadAllWorld();
+        return;
+    }
 
     if (regionId === "indonesia") {
         state.meals = localMeals;
@@ -411,7 +479,6 @@ async function loadRegion(regionId) {
         batches.forEach((result, index) => {
             if (result.status !== "fulfilled") return;
             (result.value.meals || [])
-                .slice(0, 7)
                 .forEach((meal) =>
                     unique.set(meal.idMeal, {
                         ...meal,
@@ -459,7 +526,7 @@ async function loadAllWorld() {
 }
 
 async function getMeal(id) {
-    const cached = [...state.meals, ...state.favorites].find(
+    const cached = [...state.meals, ...state.favorites, ...state.recent, ...localMeals].find(
         (meal) => meal.idMeal === String(id),
     );
     if (cached?.strInstructions) return cached;
@@ -482,6 +549,7 @@ async function openRecipe(id) {
     try {
         const meal = await getMeal(id);
         if (!meal) throw new Error("Recipe not found");
+        rememberMeal(meal);
         const ingredients = getIngredients(meal);
         const favorite = isFavorite(meal.idMeal);
         const instructions =
@@ -558,6 +626,29 @@ async function shareRecipe(id) {
     }
 }
 
+function suggestionPool() {
+    const unique = new Map();
+    [...localMeals, ...state.recent, ...state.meals, ...state.allMealsCache].forEach(meal => unique.set(meal.idMeal, meal));
+    return [...unique.values()];
+}
+
+function hideSuggestions() {
+    elements.searchSuggestions.classList.add("hidden");
+    elements.searchSuggestions.innerHTML = "";
+}
+
+function showSuggestions(term) {
+    const query = term.trim().toLowerCase();
+    if (query.length < 2) return hideSuggestions();
+    const matches = suggestionPool().filter(meal => `${meal.strMeal} ${meal.strArea || ""} ${meal.strCategory || ""}`.toLowerCase().includes(query)).slice(0, 6);
+    elements.searchSuggestions.innerHTML = matches.length ? matches.map(meal => `
+        <button type="button" class="suggestion-item" data-suggestion-id="${escapeHTML(meal.idMeal)}">
+            <img src="${escapeHTML(meal.strMealThumb)}" alt="" loading="lazy">
+            <span><strong>${escapeHTML(meal.strMeal)}</strong><small>${escapeHTML([meal.strArea, localCategory(meal.strCategory)].filter(Boolean).join(" · "))}</small></span>
+        </button>`).join("") : `<div class="suggestion-empty">${escapeHTML(t("noResultsDesc"))}</div>`;
+    elements.searchSuggestions.classList.remove("hidden");
+}
+
 function scrollToRecipes() {
     $("#recipesSection").scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -566,9 +657,16 @@ elements.searchForm.addEventListener('submit', event => { event.preventDefault()
 $$('[data-search]').forEach(button => button.addEventListener('click', () => { elements.searchInput.value = button.dataset.search; searchMeals(button.dataset.search); }));
 elements.categoryGrid.addEventListener('click', event => { const button = event.target.closest('[data-category]'); if (button) filterMeals('c', button.dataset.category); });
 elements.regionGrid.addEventListener('click', event => { const button = event.target.closest('[data-region]'); if (button) loadRegion(button.dataset.region); });
+elements.quickGrid.addEventListener('click', event => { const button = event.target.closest('[data-quick-type]'); if (!button) return; button.dataset.quickType === 'r' ? loadRegion(button.dataset.quickValue) : filterMeals(button.dataset.quickType, button.dataset.quickValue); });
 elements.areaFilter.addEventListener('change', () => elements.areaFilter.value ? filterMeals('a', elements.areaFilter.value) : loadFeatured({ scroll: true }));
+elements.ingredientFilter.addEventListener('change', () => elements.ingredientFilter.value ? filterMeals('i', elements.ingredientFilter.value) : loadFeatured({ scroll: true }));
+elements.sortFilter.addEventListener('change', () => { state.sort = elements.sortFilter.value; state.shown = 12; renderMeals(); });
 $('#clearFilter').addEventListener('click', () => { elements.searchInput.value = ''; loadFeatured({ scroll: true }); });
-elements.loadMore.addEventListener('click', () => { state.shown += 8; renderMeals(); });
+elements.loadMore.addEventListener('click', () => { state.shown += 12; renderMeals(); });
+elements.searchInput.addEventListener('input', () => showSuggestions(elements.searchInput.value));
+elements.searchSuggestions.addEventListener('click', event => { const button = event.target.closest('[data-suggestion-id]'); if (button) { hideSuggestions(); openRecipe(button.dataset.suggestionId); } });
+elements.recentGrid.addEventListener('click', event => { const button = event.target.closest('[data-recent-id]'); if (button) openRecipe(button.dataset.recentId); });
+document.addEventListener('click', event => { if (!event.target.closest('#searchForm')) hideSuggestions(); });
 
 elements.recipeGrid.addEventListener("click", (event) => {
     const favorite = event.target.closest("[data-favorite]");
@@ -592,7 +690,7 @@ $$("#heroMainCard,#heroMiniOne,#heroMiniTwo").forEach((card) =>
 );
 
 $$('.nav-link').forEach(button => button.addEventListener('click', () => {
-  state.view = button.dataset.view; state.shown = 8; updateNavigation(); updateActiveFilter();
+  state.view = button.dataset.view; state.shown = 12; updateNavigation(); updateActiveFilter();
   if (state.view === 'favorites') { elements.sectionLabel.textContent = t('cookbook'); elements.sectionTitle.textContent = t('cookbook'); renderMeals(); scrollToRecipes(); }
   else loadFeatured({ scroll: true });
 }));
@@ -630,6 +728,8 @@ elements.modalContent.addEventListener("click", (event) => {
     const share = event.target.closest("[data-share]");
     if (favorite) toggleFavorite(favorite.dataset.modalFavorite);
     if (share) shareRecipe(share.dataset.share);
+    const ingredient = event.target.closest('.ingredient-list li');
+    if (ingredient) ingredient.classList.toggle('checked');
 });
 
 $("#searchShortcut").addEventListener("click", () =>
@@ -667,11 +767,11 @@ $("#themeToggle").addEventListener("click", () => {
     document.documentElement.dataset.theme = dark ? "light" : "dark";
     localStorage.setItem("savora-theme", dark ? "light" : "dark");
 });
-window.addEventListener(
-    "scroll",
-    () => elements.header.classList.toggle("scrolled", scrollY > 18),
-    { passive: true },
-);
+window.addEventListener("scroll", () => {
+    elements.header.classList.toggle("scrolled", scrollY > 18);
+    const max = document.documentElement.scrollHeight - innerHeight;
+    elements.scrollProgress.style.width = `${max > 0 ? (scrollY / max) * 100 : 0}%`;
+}, { passive: true });
 window.addEventListener(
     "pointermove",
     (event) => {
@@ -696,6 +796,8 @@ $$(".reveal-section").forEach((section) => observer.observe(section));
 elements.languageSelect.value = state.language;
 updateNavigation();
 renderRegions();
+renderQuickJourneys();
+renderRecent();
 applyLanguage();
 loadFilters();
 loadFeatured();

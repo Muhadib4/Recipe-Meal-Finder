@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="enhancements.css" />
     </head>
     <body>
+        <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
         <div class="noise" aria-hidden="true"></div>
         <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
         <header class="site-header" id="siteHeader">
@@ -105,6 +106,7 @@
                             aria-label="Search recipes"
                         /><kbd>Ctrl K</kbd
                         ><button type="submit">Explore <span>→</span></button>
+                        <div class="search-suggestions hidden" id="searchSuggestions"></div>
                     </form>
                     <div class="hero-actions reveal delay-4">
                         <div class="popular-searches">
@@ -166,6 +168,16 @@
                     <div class="spark spark-one">✦</div>
                     <div class="spark spark-two">✦</div>
                 </div>
+            </section>
+            <section class="quick-section reveal-section" aria-labelledby="quickTitle">
+                <div class="section-intro">
+                    <div>
+                        <span class="section-label" id="quickLabel">Made for your mood</span>
+                        <h2 id="quickTitle">Choose a delicious shortcut</h2>
+                    </div>
+                    <p id="quickDescription">One tap takes you to a fresh collection packed with ideas.</p>
+                </div>
+                <div class="quick-grid" id="quickGrid"></div>
             </section>
             <section
                 class="category-section reveal-section"
@@ -280,6 +292,16 @@
                         <path d="m6 9 6 6 6-6"></path>
                     </svg>
                 </button>
+            </section>
+            <section class="recent-section reveal-section hidden" id="recentSection" aria-labelledby="recentTitle">
+                <div class="section-intro">
+                    <div>
+                        <span class="section-label" id="recentLabel">Continue exploring</span>
+                        <h2 id="recentTitle">Recently viewed</h2>
+                    </div>
+                    <p id="recentDescription">Jump back into recipes you opened recently.</p>
+                </div>
+                <div class="recent-grid" id="recentGrid"></div>
             </section>
             <section class="cta-section reveal-section">
                 <div class="cta-shape shape-one"></div>

@@ -461,6 +461,9 @@ window.SAVORA_DATA = (() => {
         sortAZ: "Name A–Z",
         sortZA: "Name Z–A",
         loadingCatalog: "Building the global catalog",
+        quickLabel: "Made for your mood", quickTitle: "Choose a delicious shortcut", quickDesc: "One tap takes you to a fresh collection packed with ideas.",
+        recentLabel: "Continue exploring", recentTitle: "Recently viewed", recentDesc: "Jump back into recipes you opened recently.",
+        comfort: "Comfort food", comfortDesc: "Warm, rich, and satisfying", fresh: "Fresh & light", freshDesc: "Colorful plant-powered ideas", sweet: "Sweet moments", sweetDesc: "Desserts worth saving", breakfastPick: "Breakfast club", breakfastPickDesc: "A better start to the day", ocean: "From the ocean", oceanDesc: "Seafood favorites", indonesiaPick: "Indonesian icons", indonesiaPickDesc: "Local dishes full of flavor",
     });
     Object.assign(translations.id, {
         world: "Semua resep dunia",
@@ -470,6 +473,9 @@ window.SAVORA_DATA = (() => {
         sortAZ: "Nama A–Z",
         sortZA: "Nama Z–A",
         loadingCatalog: "Menyusun katalog dunia",
+        quickLabel: "Sesuai suasana hatimu", quickTitle: "Pilih jalan pintas yang lezat", quickDesc: "Satu klik membuka koleksi baru penuh inspirasi.",
+        recentLabel: "Lanjutkan menjelajah", recentTitle: "Baru saja dilihat", recentDesc: "Buka kembali resep yang baru kamu lihat.",
+        comfort: "Makanan nyaman", comfortDesc: "Hangat, kaya rasa, dan memuaskan", fresh: "Segar & ringan", freshDesc: "Ide penuh warna berbahan nabati", sweet: "Momen manis", sweetDesc: "Dessert yang layak disimpan", breakfastPick: "Menu sarapan", breakfastPickDesc: "Awal hari yang lebih nikmat", ocean: "Dari lautan", oceanDesc: "Pilihan hidangan laut", indonesiaPick: "Ikon Indonesia", indonesiaPickDesc: "Masakan lokal kaya rasa",
     });
     Object.assign(translations.es, {
         world: "Todas las recetas",
@@ -479,6 +485,8 @@ window.SAVORA_DATA = (() => {
         sortAZ: "Nombre A–Z",
         sortZA: "Nombre Z–A",
         loadingCatalog: "Creando el catálogo mundial",
+        quickLabel: "Para tu estado de ánimo", quickTitle: "Elige un atajo delicioso", quickDesc: "Un toque abre una colección llena de ideas.",
+        recentLabel: "Sigue explorando", recentTitle: "Visto recientemente", recentDesc: "Vuelve a las recetas que abriste.", comfort: "Comida reconfortante", comfortDesc: "Cálida, rica y satisfactoria", fresh: "Fresco y ligero", freshDesc: "Ideas vegetales llenas de color", sweet: "Momentos dulces", sweetDesc: "Postres para guardar", breakfastPick: "Club del desayuno", breakfastPickDesc: "Un mejor comienzo del día", ocean: "Del océano", oceanDesc: "Favoritos del mar", indonesiaPick: "Iconos de Indonesia", indonesiaPickDesc: "Platos locales llenos de sabor",
     });
     Object.assign(translations.fr, {
         world: "Toutes les recettes",
@@ -488,6 +496,8 @@ window.SAVORA_DATA = (() => {
         sortAZ: "Nom A–Z",
         sortZA: "Nom Z–A",
         loadingCatalog: "Création du catalogue mondial",
+        quickLabel: "Selon votre humeur", quickTitle: "Choisissez un raccourci gourmand", quickDesc: "Un clic ouvre une collection pleine d'idées.",
+        recentLabel: "Continuer l'exploration", recentTitle: "Vus récemment", recentDesc: "Retrouvez les recettes ouvertes récemment.", comfort: "Cuisine réconfortante", comfortDesc: "Chaleureuse, riche et savoureuse", fresh: "Frais et léger", freshDesc: "Idées végétales colorées", sweet: "Moments sucrés", sweetDesc: "Desserts à conserver", breakfastPick: "Petit-déjeuner", breakfastPickDesc: "Un meilleur début de journée", ocean: "De l'océan", oceanDesc: "Favoris de la mer", indonesiaPick: "Icônes indonésiennes", indonesiaPickDesc: "Plats locaux riches en saveurs",
     });
 
     return { localMeals, regions, translations };
