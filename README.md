@@ -4,9 +4,11 @@ An editorial-style recipe discovery experience built with HTML, CSS, and JavaScr
 
 ## Features
 
-- Search meals by name
-- Browse by food category or cuisine
-- Explore Indonesia, UK/England, Europe, Asia, the Americas, and Mediterranean/MENA collections
+- Load the full global recipe catalog from A–Z, with hundreds of dishes
+- Search meals by name across live and locally curated recipes
+- Browse by food category, cuisine, region, or any available main ingredient
+- Sort every result collection by featured order, A–Z, or Z–A
+- Explore all-world, Indonesia, UK/England, Europe, Asia, the Americas, and Mediterranean/MENA collections
 - Six built-in Indonesian recipes: Nasi Goreng, Rendang, Soto Ayam, Gado-Gado, Sate Ayam, and Rawon
 - Switch the interface between English, Bahasa Indonesia, Spanish, and French
 - Complete ingredients and cooking instructions

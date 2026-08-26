@@ -135,3 +135,41 @@
         margin-bottom: 25px;
     }
 }
+.region-card[data-region="world"] {
+    grid-column: span 2;
+    background: linear-gradient(
+        135deg,
+        var(--surface),
+        color-mix(in srgb, #8b67d5 13%, var(--surface))
+    );
+}
+.region-card[data-region="world"] strong {
+    font-size: 23px;
+}
+.toolbar-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.filter-symbol {
+    color: var(--muted);
+    font-weight: 800;
+}
+.sort-wrap select {
+    min-width: 112px;
+}
+@media (max-width: 1050px) {
+    .toolbar-actions {
+        justify-content: flex-start;
+    }
+}
+@media (max-width: 580px) {
+    .region-card[data-region="world"] {
+        grid-column: auto;
+    }
+    .toolbar-actions .select-wrap {
+        width: 100%;
+    }
+    .toolbar-actions .select-wrap select {
+        flex: 1;
+    }
+}

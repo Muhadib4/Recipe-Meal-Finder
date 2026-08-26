@@ -162,6 +162,7 @@ window.SAVORA_DATA = (() => {
     ];
 
     const regions = [
+        { id: "world", flag: "🌐", color: "#8b67d5", areas: ["*"] },
         { id: "indonesia", flag: "🇮🇩", color: "#e94b45", areas: [] },
         { id: "uk", flag: "🇬🇧", color: "#4567c9", areas: ["British"] },
         {
@@ -451,6 +452,43 @@ window.SAVORA_DATA = (() => {
             mediterraneanDesc: "Turquie, Égypte, Maroc et Grèce",
         },
     };
+
+    Object.assign(translations.en, {
+        world: "All world recipes",
+        worldDesc: "Hundreds of recipes from A to Z",
+        allIngredients: "All ingredients",
+        sortDefault: "Featured order",
+        sortAZ: "Name A–Z",
+        sortZA: "Name Z–A",
+        loadingCatalog: "Building the global catalog",
+    });
+    Object.assign(translations.id, {
+        world: "Semua resep dunia",
+        worldDesc: "Ratusan resep lengkap dari A sampai Z",
+        allIngredients: "Semua bahan utama",
+        sortDefault: "Urutan pilihan",
+        sortAZ: "Nama A–Z",
+        sortZA: "Nama Z–A",
+        loadingCatalog: "Menyusun katalog dunia",
+    });
+    Object.assign(translations.es, {
+        world: "Todas las recetas",
+        worldDesc: "Cientos de recetas de la A a la Z",
+        allIngredients: "Todos los ingredientes",
+        sortDefault: "Orden destacado",
+        sortAZ: "Nombre A–Z",
+        sortZA: "Nombre Z–A",
+        loadingCatalog: "Creando el catálogo mundial",
+    });
+    Object.assign(translations.fr, {
+        world: "Toutes les recettes",
+        worldDesc: "Des centaines de recettes de A à Z",
+        allIngredients: "Tous les ingrédients",
+        sortDefault: "Ordre sélectionné",
+        sortAZ: "Nom A–Z",
+        sortZA: "Nom Z–A",
+        loadingCatalog: "Création du catalogue mondial",
+    });
 
     return { localMeals, regions, translations };
 })();

@@ -67,7 +67,8 @@
                             <circle cx="12" cy="12" r="4"></circle>
                             <path
                                 d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"
-                            ></path></svg><svg class="moon-icon" viewBox="0 0 24 24">
+                            ></path></svg
+                        ><svg class="moon-icon" viewBox="0 0 24 24">
                             <path
                                 d="M20.5 14.4A8.5 8.5 0 0 1 9.6 3.5 8.5 8.5 0 1 0 20.5 14.4Z"
                             ></path>
@@ -97,7 +98,8 @@
                     >
                         <svg viewBox="0 0 24 24">
                             <circle cx="11" cy="11" r="7"></circle>
-                            <path d="m16 16 5 5"></path></svg><input
+                            <path d="m16 16 5 5"></path></svg
+                        ><input
                             id="searchInput"
                             type="search"
                             placeholder="Search any dish..."
@@ -220,10 +222,29 @@
                                 <circle cx="12" cy="12" r="9"></circle>
                                 <path
                                     d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 0 1 0 18m0-18a15 15 0 0 0 0 18"
-                                ></path></svg><select id="areaFilter">
+                                ></path></svg
+                            ><select id="areaFilter">
                                 <option value="">All cuisines</option>
                             </select></label
-                        ><button
+                        >
+                        <label class="select-wrap"
+                            ><span class="filter-symbol">◌</span
+                            ><select
+                                id="ingredientFilter"
+                                aria-label="Filter by main ingredient"
+                            >
+                                <option value="">All ingredients</option>
+                            </select></label
+                        >
+                        <label class="select-wrap sort-wrap"
+                            ><span class="filter-symbol">↕</span
+                            ><select id="sortFilter" aria-label="Sort recipes">
+                                <option value="default">Featured order</option>
+                                <option value="az">Name A–Z</option>
+                                <option value="za">Name Z–A</option>
+                            </select></label
+                        >
+                        <button
                             class="view-toggle active"
                             id="gridView"
                             aria-label="Grid view"

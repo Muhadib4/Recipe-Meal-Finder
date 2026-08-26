@@ -11,41 +11,41 @@ const safeJSON = (key, fallback) => {
 };
 
 const state = {
-    meals: [],
-    favorites: safeJSON("savora-favorites", []),
-    shown: 8,
-    view: "discover",
-    layout: localStorage.getItem("savora-layout") || "grid",
-    category: "",
-    area: "",
-    region: "",
-    search: "",
-    heroMeals: [],
-    language: localStorage.getItem("savora-language") || "en",
+  meals: [],
+  favorites: safeJSON('savora-favorites', []),
+  shown: 8,
+  view: 'discover',
+  layout: localStorage.getItem('savora-layout') || 'grid',
+  category: '',
+  area: '',
+  region: '',
+  search: '',
+  heroMeals: [],
+  language: localStorage.getItem('savora-language') || 'en'
 };
 
 const elements = {
-    header: $("#siteHeader"),
-    searchForm: $("#searchForm"),
-    searchInput: $("#searchInput"),
-    categoryGrid: $("#categoryGrid"),
-    regionGrid: $("#regionGrid"),
-    languageSelect: $("#languageSelect"),
-    areaFilter: $("#areaFilter"),
-    recipeGrid: $("#recipeGrid"),
-    status: $("#statusCard"),
-    loadMore: $("#loadMore"),
-    sectionLabel: $("#sectionLabel"),
-    sectionTitle: $("#sectionTitle"),
-    resultCount: $("#resultCount"),
-    activeFilter: $("#activeFilter"),
-    activeFilterText: $("#activeFilterText"),
-    favoriteCount: $("#favoriteCount"),
-    modal: $("#recipeModal"),
-    modalContent: $("#modalContent"),
-    toast: $("#toast"),
-    toastText: $("#toastText"),
-    toastIcon: $("#toastIcon"),
+  header: $('#siteHeader'),
+  searchForm: $('#searchForm'),
+  searchInput: $('#searchInput'),
+  categoryGrid: $('#categoryGrid'),
+  regionGrid: $('#regionGrid'),
+  languageSelect: $('#languageSelect'),
+  areaFilter: $('#areaFilter'),
+  recipeGrid: $('#recipeGrid'),
+  status: $('#statusCard'),
+  loadMore: $('#loadMore'),
+  sectionLabel: $('#sectionLabel'),
+  sectionTitle: $('#sectionTitle'),
+  resultCount: $('#resultCount'),
+  activeFilter: $('#activeFilter'),
+  activeFilterText: $('#activeFilterText'),
+  favoriteCount: $('#favoriteCount'),
+  modal: $('#recipeModal'),
+  modalContent: $('#modalContent'),
+  toast: $('#toast'),
+  toastText: $('#toastText'),
+  toastIcon: $('#toastIcon')
 };
 
 const categoryMeta = {
@@ -147,68 +147,41 @@ function renderRegions() {
 }
 
 function applyLanguage() {
-    document.documentElement.lang = state.language;
-    elements.languageSelect.value = state.language;
-    $$(".nav-link")[0].textContent = t("discover");
-    $$(".nav-link")[1].childNodes[0].nodeValue = `${t("cookbook")} `;
-    $(".eyebrow").lastChild.nodeValue = ` ${t("eyebrow")}`;
-    $(".hero h1").innerHTML = t("heroTitle");
-    $(".hero-description").textContent = t("heroDescription");
-    elements.searchInput.placeholder = t("searchPlaceholder");
-    $(".search-bar button").innerHTML = `${t("explore")} <span>→</span>`;
-    $(".popular-searches>span").textContent = t("popular");
-    $("#randomButton").innerHTML = `<span>✦</span> ${t("surprise")}`;
-    const trustLabels = $$(".trust-row div span");
-    [t("curated"), t("cuisines"), t("free")].forEach((value, index) => {
-        trustLabels[index].textContent = value;
-    });
-    $(".category-section .section-label").textContent = t("taste");
-    $("#categoryTitle").textContent = t("craving");
-    $(".category-section .section-intro>p").textContent = t("cravingDesc");
-    $("#regionLabel").textContent = t("around");
-    $("#regionTitle").textContent = t("regionTitle");
-    $("#regionDescription").textContent = t("regionDesc");
-    elements.areaFilter.options[0].textContent = t("allCuisines");
-    $("#loadMore span").textContent = t("loadMore");
-    $(".cta-section>.section-label").textContent = t("cantDecide");
-    $(".cta-section h2").innerHTML = t("chance");
-    $(".cta-section p").textContent = t("chanceDesc");
-    $("#randomCta").innerHTML = `${t("surprise")} <span>→</span>`;
-    $(".footer-top p").textContent = t("footer");
-    $(".back-top").textContent = t("back");
-    renderRegions();
-    $$(".category-card").forEach((button) => {
-        $("strong", button).textContent = localCategory(
-            button.dataset.category,
-        );
-        $("small", button).textContent = t("inspiration");
-    });
-    if (state.view === "favorites") {
-        elements.sectionLabel.textContent = t("cookbook");
-        elements.sectionTitle.textContent = t("cookbook");
-        updateActiveFilter();
-    } else if (state.region) {
-        elements.sectionLabel.textContent = t("around");
-        elements.sectionTitle.textContent = t(state.region);
-        updateActiveFilter(`${t("around")}: ${t(state.region)}`);
-    } else if (state.category) {
-        elements.sectionLabel.textContent = t("taste");
-        elements.sectionTitle.textContent = localCategory(state.category);
-        updateActiveFilter(
-            `${t("category")}: ${localCategory(state.category)}`,
-        );
-    } else if (state.area) {
-        elements.sectionLabel.textContent = t("around");
-        updateActiveFilter(`${t("cuisine")}: ${state.area}`);
-    } else if (state.search) {
-        elements.sectionLabel.textContent = t("explore");
-        updateActiveFilter(`${t("explore")}: ${state.search}`);
-    } else {
-        elements.sectionLabel.textContent = t("handpicked");
-        elements.sectionTitle.textContent = t("today");
-        updateActiveFilter();
-    }
-    renderMeals();
+  document.documentElement.lang = state.language;
+  elements.languageSelect.value = state.language;
+  $$('.nav-link')[0].textContent = t('discover');
+  $$('.nav-link')[1].childNodes[0].nodeValue = `${t('cookbook')} `;
+  $('.eyebrow').lastChild.nodeValue = ` ${t('eyebrow')}`;
+  $('.hero h1').innerHTML = t('heroTitle');
+  $('.hero-description').textContent = t('heroDescription');
+  elements.searchInput.placeholder = t('searchPlaceholder');
+  $('.search-bar button').innerHTML = `${t('explore')} <span>→</span>`;
+  $('.popular-searches>span').textContent = t('popular');
+  $('#randomButton').innerHTML = `<span>✦</span> ${t('surprise')}`;
+  const trustLabels = $$('.trust-row div span');
+  [t('curated'), t('cuisines'), t('free')].forEach((value, index) => { trustLabels[index].textContent = value; });
+  $('.category-section .section-label').textContent = t('taste');
+  $('#categoryTitle').textContent = t('craving');
+  $('.category-section .section-intro>p').textContent = t('cravingDesc');
+  $('#regionLabel').textContent = t('around'); $('#regionTitle').textContent = t('regionTitle'); $('#regionDescription').textContent = t('regionDesc');
+  elements.areaFilter.options[0].textContent = t('allCuisines');
+  $('#loadMore span').textContent = t('loadMore');
+  $('.cta-section>.section-label').textContent = t('cantDecide');
+  $('.cta-section h2').innerHTML = t('chance'); $('.cta-section p').textContent = t('chanceDesc');
+  $('#randomCta').innerHTML = `${t('surprise')} <span>→</span>`;
+  $('.footer-top p').textContent = t('footer'); $('.back-top').textContent = t('back');
+  renderRegions();
+  $$('.category-card').forEach(button => {
+    $('strong', button).textContent = localCategory(button.dataset.category);
+    $('small', button).textContent = t('inspiration');
+  });
+  if (state.view === 'favorites') { elements.sectionLabel.textContent = t('cookbook'); elements.sectionTitle.textContent = t('cookbook'); updateActiveFilter(); }
+  else if (state.region) { elements.sectionLabel.textContent = t('around'); elements.sectionTitle.textContent = t(state.region); updateActiveFilter(`${t('around')}: ${t(state.region)}`); }
+  else if (state.category) { elements.sectionLabel.textContent = t('taste'); elements.sectionTitle.textContent = localCategory(state.category); updateActiveFilter(`${t('category')}: ${localCategory(state.category)}`); }
+  else if (state.area) { elements.sectionLabel.textContent = t('around'); updateActiveFilter(`${t('cuisine')}: ${state.area}`); }
+  else if (state.search) { elements.sectionLabel.textContent = t('explore'); updateActiveFilter(`${t('explore')}: ${state.search}`); }
+  else { elements.sectionLabel.textContent = t('handpicked'); elements.sectionTitle.textContent = t('today'); updateActiveFilter(); }
+  renderMeals();
 }
 
 async function api(path) {
@@ -229,11 +202,9 @@ function showToast(text, icon = "✓") {
 }
 
 function showSkeletons() {
-    elements.status.classList.add("hidden");
-    elements.loadMore.classList.add("hidden");
-    elements.recipeGrid.innerHTML = Array.from(
-        { length: 8 },
-        () => `
+  elements.status.classList.add('hidden');
+  elements.loadMore.classList.add('hidden');
+  elements.recipeGrid.innerHTML = Array.from({ length: 8 }, () => `
     <article class="recipe-card skeleton-card" aria-hidden="true">
       <div class="card-image"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div>
     </article>`,
@@ -272,7 +243,7 @@ function mealCard(meal, index) {
 }
 
 function currentSource() {
-    return state.view === "favorites" ? state.favorites : state.meals;
+  return state.view === 'favorites' ? state.favorites : state.meals;
 }
 
 function renderMeals() {
@@ -333,147 +304,68 @@ function setHeroMeals(meals) {
 }
 
 async function loadFeatured({ scroll = false } = {}) {
-    state.view = "discover";
-    state.category = "";
-    state.area = "";
-    state.region = "";
-    state.search = "";
-    state.shown = 8;
-    elements.areaFilter.value = "";
-    updateNavigation();
-    updateActiveFilter();
-    updateCategorySelection();
-    updateRegionSelection();
-    showSkeletons();
-    elements.sectionLabel.textContent = t("handpicked");
-    elements.sectionTitle.textContent = t("today");
-    try {
-        const batches = await Promise.all(
-            ["chicken", "pasta", "salmon", "curry"].map((term) =>
-                api(`search.php?s=${term}`),
-            ),
-        );
-        const unique = new Map();
-        batches
-            .flatMap((batch) => batch.meals || [])
-            .forEach((meal) => unique.set(meal.idMeal, meal));
-        state.meals = [...unique.values()];
-        setHeroMeals(state.meals);
-        renderMeals();
-        if (scroll) scrollToRecipes();
-    } catch {
-        showStatus(
-            "!",
-            "Could not load recipes",
-            "Check your connection and refresh the page.",
-        );
-    }
+  state.view = 'discover'; state.category = ''; state.area = ''; state.region = ''; state.search = ''; state.shown = 8;
+  elements.areaFilter.value = '';
+  updateNavigation(); updateActiveFilter(); updateCategorySelection(); updateRegionSelection(); showSkeletons();
+  elements.sectionLabel.textContent = t('handpicked'); elements.sectionTitle.textContent = t('today');
+  try {
+    const batches = await Promise.all(['chicken', 'pasta', 'salmon', 'curry'].map(term => api(`search.php?s=${term}`)));
+    const unique = new Map();
+    batches.flatMap(batch => batch.meals || []).forEach(meal => unique.set(meal.idMeal, meal));
+    state.meals = [...unique.values()];
+    setHeroMeals(state.meals);
+    renderMeals();
+    if (scroll) scrollToRecipes();
+  } catch {
+    showStatus('!', 'Could not load recipes', 'Check your connection and refresh the page.');
+  }
 }
 
 async function searchMeals(term) {
-    term = term.trim();
-    if (!term) return loadFeatured({ scroll: true });
-    state.view = "discover";
-    state.category = "";
-    state.area = "";
-    state.region = "";
-    state.search = term;
-    state.shown = 8;
-    elements.areaFilter.value = "";
-    updateNavigation();
-    updateCategorySelection();
-    updateRegionSelection();
-    updateActiveFilter(`${t("explore")}: ${term}`);
-    showSkeletons();
-    elements.sectionLabel.textContent = t("explore");
-    elements.sectionTitle.textContent = `“${term}”`;
-    try {
-        const data = await api(`search.php?s=${encodeURIComponent(term)}`);
-        const localMatches = localMeals.filter((meal) =>
-            `${meal.strMeal} ${meal.strCategory} ${meal.strArea}`
-                .toLowerCase()
-                .includes(term.toLowerCase()),
-        );
-        state.meals = [...localMatches, ...(data.meals || [])];
-        renderMeals();
-        scrollToRecipes();
-    } catch {
-        showStatus(
-            "!",
-            "Search is unavailable",
-            "Please wait a moment and try again.",
-        );
-    }
+  term = term.trim();
+  if (!term) return loadFeatured({ scroll: true });
+  state.view = 'discover'; state.category = ''; state.area = ''; state.region = ''; state.search = term; state.shown = 8;
+  elements.areaFilter.value = '';
+  updateNavigation(); updateCategorySelection(); updateRegionSelection(); updateActiveFilter(`${t('explore')}: ${term}`); showSkeletons();
+  elements.sectionLabel.textContent = t('explore'); elements.sectionTitle.textContent = `“${term}”`;
+  try {
+    const data = await api(`search.php?s=${encodeURIComponent(term)}`);
+    const localMatches = localMeals.filter(meal => `${meal.strMeal} ${meal.strCategory} ${meal.strArea}`.toLowerCase().includes(term.toLowerCase()));
+    state.meals = [...localMatches, ...(data.meals || [])];
+    renderMeals(); scrollToRecipes();
+  } catch {
+    showStatus('!', 'Search is unavailable', 'Please wait a moment and try again.');
+  }
 }
 
 async function filterMeals(type, value) {
-    state.view = "discover";
-    state.shown = 8;
-    state.search = "";
-    state.region = "";
-    if (type === "c") {
-        state.category = value;
-        state.area = "";
-        elements.areaFilter.value = "";
-    } else {
-        state.area = value;
-        state.category = "";
-    }
-    updateNavigation();
-    updateCategorySelection();
-    updateRegionSelection();
-    updateActiveFilter(
-        `${type === "c" ? t("category") : t("cuisine")}: ${value}`,
-    );
-    showSkeletons();
-    elements.sectionLabel.textContent =
-        type === "c" ? "Explore by taste" : "Explore the world";
-    elements.sectionTitle.textContent =
-        type === "c" ? localCategory(value) : value;
-    try {
-        const data = await api(
-            `filter.php?${type}=${encodeURIComponent(value)}`,
-        );
-        state.meals = data.meals || [];
-        renderMeals();
-        scrollToRecipes();
-    } catch {
-        showStatus(
-            "!",
-            "This filter is unavailable",
-            "Please wait a moment and try again.",
-        );
-    }
+  state.view = 'discover'; state.shown = 8; state.search = ''; state.region = '';
+  if (type === 'c') { state.category = value; state.area = ''; elements.areaFilter.value = ''; }
+  else { state.area = value; state.category = ''; }
+  updateNavigation(); updateCategorySelection(); updateRegionSelection(); updateActiveFilter(`${type === 'c' ? t('category') : t('cuisine')}: ${value}`); showSkeletons();
+  elements.sectionLabel.textContent = type === 'c' ? 'Explore by taste' : 'Explore the world';
+  elements.sectionTitle.textContent = type === 'c' ? localCategory(value) : value;
+  try {
+    const data = await api(`filter.php?${type}=${encodeURIComponent(value)}`);
+    state.meals = data.meals || [];
+    renderMeals(); scrollToRecipes();
+  } catch {
+    showStatus('!', 'This filter is unavailable', 'Please wait a moment and try again.');
+  }
 }
 
 async function loadFilters() {
-    try {
-        const [categoryData, areaData] = await Promise.all([
-            api("list.php?c=list"),
-            api("list.php?a=list"),
-        ]);
-        const categories = (categoryData.meals || [])
-            .filter((item) => item.strCategory !== "Miscellaneous")
-            .slice(0, 12);
-        elements.categoryGrid.innerHTML = categories
-            .map((item) => {
-                const [icon, subtitle] = categoryMeta[item.strCategory] || [
-                    "🍽️",
-                    "Discover recipes",
-                ];
-                return `<button class="category-card" data-category="${escapeHTML(item.strCategory)}"><span class="category-icon">${icon}</span><strong>${escapeHTML(localCategory(item.strCategory))}</strong><small>${escapeHTML(state.language === "en" ? subtitle : t("inspiration"))}</small></button>`;
-            })
-            .join("");
-        elements.areaFilter.innerHTML += (areaData.meals || [])
-            .map(
-                (item) =>
-                    `<option value="${escapeHTML(item.strArea)}">${escapeHTML(item.strArea)}</option>`,
-            )
-            .join("");
-    } catch {
-        elements.categoryGrid.innerHTML =
-            '<div class="status-card"><strong>Categories unavailable</strong><span>You can still search for any meal above.</span></div>';
-    }
+  try {
+    const [categoryData, areaData] = await Promise.all([api('list.php?c=list'), api('list.php?a=list')]);
+    const categories = (categoryData.meals || []).filter(item => item.strCategory !== 'Miscellaneous').slice(0, 12);
+    elements.categoryGrid.innerHTML = categories.map(item => {
+      const [icon, subtitle] = categoryMeta[item.strCategory] || ['🍽️', 'Discover recipes'];
+      return `<button class="category-card" data-category="${escapeHTML(item.strCategory)}"><span class="category-icon">${icon}</span><strong>${escapeHTML(localCategory(item.strCategory))}</strong><small>${escapeHTML(state.language === 'en' ? subtitle : t('inspiration'))}</small></button>`;
+    }).join('');
+    elements.areaFilter.innerHTML += (areaData.meals || []).map(item => `<option value="${escapeHTML(item.strArea)}">${escapeHTML(item.strArea)}</option>`).join('');
+  } catch {
+    elements.categoryGrid.innerHTML = '<div class="status-card"><strong>Categories unavailable</strong><span>You can still search for any meal above.</span></div>';
+  }
 }
 
 function updateCategorySelection() {
@@ -495,22 +387,12 @@ function updateRegionSelection() {
 }
 
 async function loadRegion(regionId) {
-    const region = regions.find((item) => item.id === regionId);
-    if (!region) return;
-    state.view = "discover";
-    state.category = "";
-    state.area = "";
-    state.search = "";
-    state.region = regionId;
-    state.shown = 8;
-    elements.areaFilter.value = "";
-    updateNavigation();
-    updateCategorySelection();
-    updateRegionSelection();
-    updateActiveFilter(`${t("around")}: ${t(regionId)}`);
-    showSkeletons();
-    elements.sectionLabel.textContent = t("around");
-    elements.sectionTitle.textContent = t(regionId);
+  const region = regions.find(item => item.id === regionId);
+  if (!region) return;
+  state.view = 'discover'; state.category = ''; state.area = ''; state.search = ''; state.region = regionId; state.shown = 8;
+  elements.areaFilter.value = '';
+  updateNavigation(); updateCategorySelection(); updateRegionSelection(); updateActiveFilter(`${t('around')}: ${t(regionId)}`); showSkeletons();
+  elements.sectionLabel.textContent = t('around'); elements.sectionTitle.textContent = t(regionId);
 
     if (regionId === "indonesia") {
         state.meals = localMeals;
@@ -543,6 +425,37 @@ async function loadRegion(regionId) {
     } catch {
         showStatus("!", t("noResults"), t("noResultsDesc"));
     }
+}
+
+async function loadAllWorld() {
+  if (state.allMealsCache.length) {
+    state.meals = state.allMealsCache;
+    renderMeals(); scrollToRecipes();
+    return;
+  }
+
+  const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+  const unique = new Map(localMeals.map(meal => [meal.idMeal, meal]));
+
+  try {
+    for (let index = 0; index < letters.length; index += 5) {
+      const batch = letters.slice(index, index + 5);
+      const results = await Promise.allSettled(batch.map(letter => api(`search.php?f=${letter}`)));
+      results.forEach(result => {
+        if (result.status === 'fulfilled') {
+          (result.value.meals || []).forEach(meal => unique.set(meal.idMeal, meal));
+        }
+      });
+      elements.resultCount.textContent = `${t('loadingCatalog')} ${Math.min(index + 5, letters.length)}/${letters.length} · ${unique.size}`;
+    }
+    state.allMealsCache = [...unique.values()];
+    state.meals = state.allMealsCache;
+    renderMeals(); scrollToRecipes();
+  } catch {
+    state.meals = [...unique.values()];
+    if (state.meals.length) renderMeals();
+    else showStatus('!', t('noResults'), t('noResultsDesc'));
+  }
 }
 
 async function getMeal(id) {
@@ -649,37 +562,13 @@ function scrollToRecipes() {
     $("#recipesSection").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-elements.searchForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    searchMeals(elements.searchInput.value);
-});
-$$("[data-search]").forEach((button) =>
-    button.addEventListener("click", () => {
-        elements.searchInput.value = button.dataset.search;
-        searchMeals(button.dataset.search);
-    }),
-);
-elements.categoryGrid.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-category]");
-    if (button) filterMeals("c", button.dataset.category);
-});
-elements.regionGrid.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-region]");
-    if (button) loadRegion(button.dataset.region);
-});
-elements.areaFilter.addEventListener("change", () =>
-    elements.areaFilter.value
-        ? filterMeals("a", elements.areaFilter.value)
-        : loadFeatured({ scroll: true }),
-);
-$("#clearFilter").addEventListener("click", () => {
-    elements.searchInput.value = "";
-    loadFeatured({ scroll: true });
-});
-elements.loadMore.addEventListener("click", () => {
-    state.shown += 8;
-    renderMeals();
-});
+elements.searchForm.addEventListener('submit', event => { event.preventDefault(); searchMeals(elements.searchInput.value); });
+$$('[data-search]').forEach(button => button.addEventListener('click', () => { elements.searchInput.value = button.dataset.search; searchMeals(button.dataset.search); }));
+elements.categoryGrid.addEventListener('click', event => { const button = event.target.closest('[data-category]'); if (button) filterMeals('c', button.dataset.category); });
+elements.regionGrid.addEventListener('click', event => { const button = event.target.closest('[data-region]'); if (button) loadRegion(button.dataset.region); });
+elements.areaFilter.addEventListener('change', () => elements.areaFilter.value ? filterMeals('a', elements.areaFilter.value) : loadFeatured({ scroll: true }));
+$('#clearFilter').addEventListener('click', () => { elements.searchInput.value = ''; loadFeatured({ scroll: true }); });
+elements.loadMore.addEventListener('click', () => { state.shown += 8; renderMeals(); });
 
 elements.recipeGrid.addEventListener("click", (event) => {
     const favorite = event.target.closest("[data-favorite]");
@@ -702,20 +591,11 @@ $$("#heroMainCard,#heroMiniOne,#heroMiniTwo").forEach((card) =>
     ),
 );
 
-$$(".nav-link").forEach((button) =>
-    button.addEventListener("click", () => {
-        state.view = button.dataset.view;
-        state.shown = 8;
-        updateNavigation();
-        updateActiveFilter();
-        if (state.view === "favorites") {
-            elements.sectionLabel.textContent = t("cookbook");
-            elements.sectionTitle.textContent = t("cookbook");
-            renderMeals();
-            scrollToRecipes();
-        } else loadFeatured({ scroll: true });
-    }),
-);
+$$('.nav-link').forEach(button => button.addEventListener('click', () => {
+  state.view = button.dataset.view; state.shown = 8; updateNavigation(); updateActiveFilter();
+  if (state.view === 'favorites') { elements.sectionLabel.textContent = t('cookbook'); elements.sectionTitle.textContent = t('cookbook'); renderMeals(); scrollToRecipes(); }
+  else loadFeatured({ scroll: true });
+}));
 
 $("#gridView").addEventListener("click", () => {
     state.layout = "grid";
