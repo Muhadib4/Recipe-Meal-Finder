@@ -6,6 +6,9 @@ An editorial-style recipe discovery experience built with HTML, CSS, and JavaScr
 
 - Search meals by name
 - Browse by food category or cuisine
+- Explore Indonesia, UK/England, Europe, Asia, the Americas, and Mediterranean/MENA collections
+- Six built-in Indonesian recipes: Nasi Goreng, Rendang, Soto Ayam, Gado-Gado, Sate Ayam, and Rawon
+- Switch the interface between English, Bahasa Indonesia, Spanish, and French
 - Complete ingredients and cooking instructions
 - Random recipe inspiration
 - Favorites saved in browser local storage
@@ -28,3 +31,7 @@ npx serve .
 Go to **Settings → Pages**, choose **Deploy from a branch**, then select `main` and `/ (root)`. The website will be available at:
 
 `https://muhadib4.github.io/Recipe-Meal-Finder/`
+
+## Image credits
+
+Global meal data and images are provided by TheMealDB. Indonesian meal photography is loaded from Wikimedia Commons under each image's respective open license; the file pages are listed in `data.js`.
